@@ -18,11 +18,13 @@
     "@remix-run/react": "^1.6.7",
     "@remix-run/serve": "^1.6.7",
     "@remix-run/vercel": "^1.6.7",
+    "axios": "^1.1.2",
     "dotenv": "^16.0.1",
     "framer-motion": "^7.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remix": "^1.6.7",
+    "rss-parser": "^3.12.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

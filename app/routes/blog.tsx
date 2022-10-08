@@ -1,49 +1,39 @@
-import {MetaFunction} from '@remix-run/node'
 import {useLoaderData} from '@remix-run/react'
-import {v4 as uuidv4} from 'uuid'
+import Parser from 'rss-parser';
+import axios from 'axios'
+
 
 type Blog = {
   id: string
   url: string
   title: string
-  page_views_count: number
+  image_url: string
   description: string
   tag_list: string[]
+};
+
+type GetRssData = {
+  rssFeedURL: string
 }
 
-export const meta: MetaFunction = () => ({
-  title: 'Thomas Ledoux | Blog',
-  description: 'Blogs written by Thomas Ledoux on Dev.to',
-  'twitter:title': 'Thomas Ledoux | Blog',
-  'twitter:description': 'Blogs written by Thomas Ledoux on Dev.to',
-  'og:title': 'Thomas Ledoux | Blog',
-  'og:description': 'Blogs written by Thomas Ledoux on Dev.to',
-})
+// type CustomFeed = {foo: string};
+// type CustomItem = {bar: number};
 
-type LoaderData = {
-  blogs?: Blog[]
-}
 
-export async function loader() {
-  let blogs
-  try {
-    const res = await fetch('https://dev.to/api/articles/me/published', {
-      // @ts-ignore
-      headers: {
-        'api-key': process.env.DEV_KEY,
-      },
-    })
 
-    blogs = (await res.json()) as Blog[]
-  } catch (err) {
-    console.log(err)
-  }
-  return {
-    blogs: blogs
-      ?.sort((a, b) => b.page_views_count - a.page_views_count)
-      .slice(0, 5),
-  }
-}
+const parser: Parser<GetRssData> = new Parser({
+
+});
+
+(async () => {
+
+  const feed = await parser.parseURL('https://tiffanywhite.dev/rss');
+  console.log(feed.title); // feed will have a `foo` property, type as a string
+
+  feed.items.forEach(item => {
+    console.log(item.title + ':' + item.link) // item will have a `bar` property type as a number
+  });
+})();
 
 const Blogs = () => {
   const loaderData = useLoaderData<LoaderData>()
